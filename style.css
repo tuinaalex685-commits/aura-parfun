@@ -613,12 +613,19 @@ header.scrolled .menu-btn span {
    ============================================================ */
 .storytelling {
     text-align: center;
-    background-color: var(--creme);
+    background-color: #EDE8DF; /* Magnifique beige sable chaud */
     position: relative;
-    max-width: 780px;
-    margin: 0 auto;
-    padding: var(--section-pad-y) 24px;
+    padding: var(--section-pad-y) var(--section-pad-x);
+    width: 100%;
 }
+
+.storytelling h2,
+.storytelling p {
+    max-width: 780px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 
 .story-label {
     font-family: var(--font-sans);
