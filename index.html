@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aura Parfums - Collection de fragrances de luxe et d'orient importées et authentiques à Ouagadougou. Service de livraison 24h et paiement sécurisé.">
+    <title>Aura Parfums | Haute Parfumerie à Ouagadougou</title>
+    
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- --- PRELOADER (LOADING SCREEN) --- -->
+    <div id="preloader">
+        <div class="preloader-content">
+            <h2 class="preloader-logo">AURA</h2>
+            <div class="preloader-line"></div>
+        </div>
+    </div>
+
+    <!-- --- HEADER / NAVIGATION --- -->
+    <header>
+        <a href="#" class="logo">AURA<span>.</span></a>
+        
+        <nav class="nav-links" id="navLinks">
+            <a href="#accueil">Accueil</a>
+            <a href="#comment-ca-marche">Signature</a>
+            <a href="#collection">Collection</a>
+            <a href="#temoignages">Avis</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        
+        <a href="https://wa.me/22657138126?text=Bonjour%20Aura%20Parfums%2C%20je%20souhaite%20d%C3%A9couvrir%20vos%20parfums%20disponibles." target="_blank" class="header-cta">
+            <!-- WhatsApp Custom SVG Icon -->
+            <svg viewBox="0 0 24 24" width="16" height="16">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.248 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.666.988 3.307 1.492 5.345 1.493 5.489 0 9.957-4.469 9.96-9.962.002-2.661-1.033-5.163-2.909-7.04C17.167 1.77 14.67 .733 12.01.733c-5.492 0-9.96 4.47-9.963 9.963-.001 2.158.569 4.137 1.682 5.832l-1.018 3.714 3.936-1.03zM16.516 13.6c-.244-.122-1.45-.714-1.674-.795-.224-.082-.388-.122-.55.122-.164.245-.633.796-.776.959-.143.164-.286.184-.53.061-.244-.122-1.03-.38-1.962-1.21-.725-.647-1.215-1.447-1.357-1.693-.143-.245-.015-.378.107-.5.11-.11.244-.286.367-.428.122-.143.163-.245.244-.409.082-.164.041-.307-.02-.429-.062-.123-.55-1.328-.754-1.817-.199-.48-.401-.414-.55-.422-.143-.008-.307-.01-.47-.01-.164 0-.429.062-.653.307-.224.244-.857.837-.857 2.04 0 1.204.878 2.368.999 2.531.122.164 1.728 2.637 4.187 3.7.585.253 1.042.404 1.399.518.588.187 1.123.161 1.545.099.47-.069 1.45-.592 1.653-1.163.204-.572.204-1.062.143-1.163-.062-.102-.225-.164-.469-.286z"/>
+            </svg>
+            WhatsApp : 57 13 81 26
+        </a>
+        
+        <button class="menu-btn" id="menuBtn" aria-label="Menu de navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- Mobile Menu Overlay Background -->
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <main>
+        <!-- --- HERO SECTION --- -->
+        <section class="hero" id="accueil">
+            <div class="hero-content fade-in-up">
+                <span class="hero-label">Exclusivité Ouagadougou</span>
+                <h1>Votre Signature <span>Olfactive Unique</span></h1>
+                <p>Explorez une collection de fragrances rares, importées et garanties 100% authentiques. Révélez votre charisme avec nos essences précieuses. Livraison en 24h partout à Ouagadougou.</p>
+                
+                <div class="hero-actions">
+                    <a href="https://wa.me/22657138126?text=Bonjour%20Aura%20Parfums%2C%20je%20souhaite%20commander%20un%20parfum." target="_blank" class="btn-luxury-solid">
+                        <!-- WhatsApp SVG -->
+                        <svg viewBox="0 0 24 24">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.248 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.666.988 3.307 1.492 5.345 1.493 5.489 0 9.957-4.469 9.96-9.962.002-2.661-1.033-5.163-2.909-7.04C17.167 1.77 14.67 .733 12.01.733c-5.492 0-9.96 4.47-9.963 9.963-.001 2.158.569 4.137 1.682 5.832l-1.018 3.714 3.936-1.03zM16.516 13.6c-.244-.122-1.45-.714-1.674-.795-.224-.082-.388-.122-.55.122-.164.245-.633.796-.776.959-.143.164-.286.184-.53.061-.244-.122-1.03-.38-1.962-1.21-.725-.647-1.215-1.447-1.357-1.693-.143-.245-.015-.378.107-.5.11-.11.244-.286.367-.428.122-.143.163-.245.244-.409.082-.164.041-.307-.02-.429-.062-.123-.55-1.328-.754-1.817-.199-.48-.401-.414-.55-.422-.143-.008-.307-.01-.47-.01-.164 0-.429.062-.653.307-.224.244-.857.837-.857 2.04 0 1.204.878 2.368.999 2.531.122.164 1.728 2.637 4.187 3.7.585.253 1.042.404 1.399.518.588.187 1.123.161 1.545.099.47-.069 1.45-.592 1.653-1.163.204-.572.204-1.062.143-1.163-.062-.102-.225-.164-.469-.286z"/>
+                        </svg>
+                        Commander sur WhatsApp
+                    </a>
+                    <a href="#collection" class="btn-luxury-outline">
+                        Voir la collection
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-image-container fade-in-up delay-2">
+                <div class="hero-image-wrapper">
+                    <img src="perfume_hero.png" alt="Aura Parfums - Flacon de Luxe">
+                </div>
+            </div>
+        </section>
+
+        <!-- --- BANDEAU DE REASSURANCE --- -->
+        <section class="reassurance-band">
+            <div class="reassurance-grid">
+                <!-- Item 1 -->
+                <div class="reassurance-item">
+                    <div class="reassurance-icon">
+                        <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                    </div>
+                    <div class="reassurance-text">
+                        <h3>Livraison 24h</h3>
+                        <p>À domicile ou bureau à Ouaga</p>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="reassurance-item">
+                    <div class="reassurance-icon">
+                        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                    </div>
+                    <div class="reassurance-text">
+                        <h3>Paiement Sécurisé</h3>
+                        <p>Orange / Moov Money ou Cash</p>
+                    </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="reassurance-item">
+                    <div class="reassurance-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </div>
+                    <div class="reassurance-text">
+                        <h3>Authenticité 100%</h3>
+                        <p>Importations directes garanties</p>
+                    </div>
+                </div>
+                <!-- Item 4 -->
+                <div class="reassurance-item">
+                    <div class="reassurance-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <div class="reassurance-text">
+                        <h3>Garantie Confiance</h3>
+                        <p>Vérification avant paiement</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- STORYTELLING / BRAND STORY --- -->
+        <section class="storytelling fade-in-up">
+            <span class="story-label">L'Art du Parfum</span>
+            <h2>Le Luxe Accessible <span>à Portée de Main</span></h2>
+            <p>"Chez Aura Parfums, nous pensons que le parfum est la forme la plus intense du souvenir. C'est un vêtement olfactif, une aura qui vous précède et vous suit. Nous sélectionnons des fragrances raffinées et iconiques, conçues pour durer sous le soleil du Sahel, afin d'offrir à chaque Burkinabè une élégance inégalable et accessible en un clic."</p>
+            <div class="story-divider"></div>
+        </section>
+
+        <!-- --- COMMENT CA MARCHE (HOW IT WORKS) --- -->
+        <section class="section" id="comment-ca-marche">
+            <div class="section-title-wrapper fade-in-up">
+                <span class="section-label">Simplicité Absolue</span>
+                <h2>Comment commander <span>votre sillage</span> ?</h2>
+            </div>
+            
+            <div class="how-it-works-grid">
+                <!-- Step 1 -->
+                <div class="step-card fade-in-up delay-1">
+                    <span class="step-number">I</span>
+                    <div class="step-icon-wrapper">
+                        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+                    <h3>1. Choisissez</h3>
+                    <p>Découvrez notre sélection de fragrances ci-dessous. Chaque parfum est sélectionné pour sa tenue exceptionnelle et sa personnalité unique.</p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="step-card fade-in-up delay-2">
+                    <span class="step-number">II</span>
+                    <div class="step-icon-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    </div>
+                    <h3>2. Commandez</h3>
+                    <p>Cliquez sur "Commander" pour ouvrir instantanément WhatsApp. Un message pré-rempli s'ouvre pour valider vos choix en quelques secondes.</p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="step-card fade-in-up delay-3">
+                    <span class="step-number">III</span>
+                    <div class="step-icon-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    </div>
+                    <h3>3. Recevez</h3>
+                    <p>Notre équipe vous livre en moins de 24h à Ouagadougou. Vous inspectez le flacon puis réglez en espèces ou par Mobile Money.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- COLLECTION / CATALOG SECTION --- -->
+        <section class="section" id="collection" style="background-color: var(--bg-cream); border-top: var(--border-thin);">
+            <div class="section-title-wrapper fade-in-up">
+                <span class="section-label">Sélection Exclusive</span>
+                <h2>Nos Parfums <span>les plus Prisés</span></h2>
+            </div>
+            
+            <div class="showcase-grid">
+                <!-- Product 1 -->
+                <div class="product-card fade-in-up delay-1">
+                    <div class="product-image-box">
+                        <span class="product-tag">Best Seller</span>
+                        <img src="perfume_hero.png" alt="Parfum SPÉCIAL">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Édition Spéciale</span>
+                        <h3 class="product-title">SPÉCIAL</h3>
+                        <p class="product-desc">Une fragrance d'exception aux accords intenses et raffinés de oud et de rose noire. La perfection absolue pour s'affirmer.</p>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                <span class="price-label">Prix</span>
+                                <span class="price-val">7 000 FCFA</span>
+                            </div>
+                            <a href="https://wa.me/22657138126?text=Bonjour%20Aura%20Parfums%2C%20je%20souhaite%20commander%20le%20parfum%20*SP%C3%89CIAL*%20(7%20000%20FCFA)." target="_blank" class="btn-order-gold" aria-label="Commander SPÉCIAL">
+                                <span>Commander</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card fade-in-up delay-2">
+                    <div class="product-image-box">
+                        <span class="product-tag product-tag-bordeaux">Tendance</span>
+                        <img src="perfume_crystal.png" alt="Parfum ZANZIBAR">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Frais & Épicé</span>
+                        <h3 class="product-title">ZANZIBAR</h3>
+                        <p class="product-desc">Une fraîcheur tropicale intense, mariant noix de coco, bois de santal et des notes épicées. Une signature unique pour le climat sahélien.</p>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                <span class="price-label">Prix</span>
+                                <span class="price-val">5 000 FCFA</span>
+                            </div>
+                            <a href="https://wa.me/22657138126?text=Bonjour%20Aura%20Parfums%2C%20je%20souhaite%20commander%20le%20parfum%20*ZANZIBAR*%20(5%20000%20FCFA)." target="_blank" class="btn-order-gold" aria-label="Commander ZANZIBAR">
+                                <span>Commander</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card fade-in-up delay-3">
+                    <div class="product-image-box">
+                        <span class="product-tag">Gourmand</span>
+                        <img src="perfume_khamrah.png" alt="Parfum KHAMRAH">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Unisexe</span>
+                        <h3 class="product-title">KHAMRAH</h3>
+                        <p class="product-desc">Un sillage oriental somptueux, mêlant des accords de dattes douces, de cannelle épicée et de vanille veloutée.</p>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                <span class="price-label">Prix</span>
+                                <span class="price-val">4 000 FCFA</span>
+                            </div>
+                            <a href="https://wa.me/22657138126?text=Bonjour%20Aura%20Parfums%2C%20je%20souhaite%20commander%20le%20parfum%20*KHAMRAH*%20(4%20000%20FCFA)." target="_blank" class="btn-order-gold" aria-label="Commander KHAMRAH">
+                                <span>Commander</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- FEATURED SIGNATURE PRODUCT (Mise en avant dramatique) --- -->
+        <section class="featured-perfume">
+            <div class="featured-image-container fade-in-up">
+                <img src="perfume_gold.png" alt="Khamrah d'Aura Parfums">
+            </div>
+            
+            <div class="featured-content fade-in-up delay-2">
+                <span class="section-label" style="color: var(--accent-gold);">Création Signature</span>
+                <h2>Khamrah <span>L'Essence de l'Orient</span></h2>
+                <p class="featured-desc">Découvrez notre parfum le plus mystique. Khamrah marie la richesse des notes de dattes et de cannelle à la douceur crémeuse de la praline et de la tubéreuse, le tout reposant sur un lit boisé d'ambre et de vanille. Une fragrance addictive et envoûtante, conçue pour marquer les esprits.</p>
+                
+                <div class="olfactory-notes">
+                    <div class="note-item">
+                        <strong>Tête</strong>
+                        <span>Cannelle, Dattes, Muscade</span>
+                    </div>
+                    <div class="note-item">
+                        <strong>Cœur</strong>
+                        <span>Praline, Tubéreuse, Ylang-Ylang</span>
+                    </div>
+                    <div class="note-item">
+                        <strong>Fond</strong>
+                        <span>Bois d'ambre, Vanille, Myrrhe</span>
+                    </div>
+                </div>
+                
+                <div class="product-footer" style="border-top: none; padding-top: 0;">
+                    <div class="product-price">
+                        <span class="price-label" style="color: rgba(255,255,255,0.6);">Tarif Exclusif</span>
+                        <span class="price-val" style="color: var(--accent-gold); font-size: 2.2rem;">4 000 FCFA</span>
+                    </div>
+                    <a href="https://wa.me/22657138126?text=Bonjour%20Aura%20Parfums%2C%20je%20souhaite%20commander%20le%20parfum%20signature%20*KHAMRAH*%20(4%20000%20FCFA)." target="_blank" class="btn-luxury-solid">
+                        Commander ce parfum
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- TESTIMONIALS SECTION --- -->
+        <section class="section" id="temoignages" style="background-color: var(--bg-cream);">
+            <div class="section-title-wrapper fade-in-up">
+                <span class="section-label">Avis de nos Clients</span>
+                <h2>Ce qu'ils disent de <span>Aura Parfums</span></h2>
+            </div>
+            
+            <div class="testimonials-grid">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card fade-in-up delay-1">
+                    <div class="rating-stars">
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <p class="testimonial-text">"Parfums 100% originaux et de très bonne qualité. J'ai commandé Khamrah et la tenue est tout simplement exceptionnelle. Livraison rapide à mon bureau à Ouaga 2000 !"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AD</div>
+                        <div class="author-info">
+                            <h4>Amadou Diallo</h4>
+                            <p>Ouaga 2000</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card fade-in-up delay-2">
+                    <div class="rating-stars">
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <p class="testimonial-text">"Le service client sur WhatsApp est hyper réactif et professionnel. Le colis m'a été livré à la Patte d'Oie en moins de 3 heures. Je recommande à 100% !"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MS</div>
+                        <div class="author-info">
+                            <h4>Mariam Sawadogo</h4>
+                            <p>Patte d'Oie</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card fade-in-up delay-3">
+                    <div class="rating-stars">
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <p class="testimonial-text">"Des prix très abordables pour des fragrances originales. Le livreur était très courtois. Possibilité de payer par Orange Money après vérification."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">IK</div>
+                        <div class="author-info">
+                            <h4>Ibrahim Kaboré</h4>
+                            <p>Somgandé</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- FAQ SECTION (DISCRETE ACCORDION) --- -->
+        <section class="section" id="faq" style="background-color: var(--bg-cream); border-top: var(--border-thin);">
+            <div class="section-title-wrapper fade-in-up">
+                <span class="section-label">Questions Fréquentes</span>
+                <h2>Des réponses à <span>vos questions</span></h2>
+            </div>
+            
+            <div class="faq-container">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item fade-in-up">
+                    <button class="faq-question">
+                        <span>Comment se passe la livraison à Ouagadougou ?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Nous livrons sous 24h partout à Ouagadougou (à domicile, au bureau ou dans un point de retrait de votre choix). La livraison est rapide et organisée par nos livreurs dédiés.</p>
+                    </div>
+                </div>
+                <!-- FAQ Item 2 -->
+                <div class="faq-item fade-in-up">
+                    <button class="faq-question">
+                        <span>Quels sont les moyens de paiement acceptés ?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Nous acceptons les paiements en espèces à la livraison (après que vous ayez inspecté votre flacon), ainsi que les transferts Mobile Money (Orange Money et Moov Money) à la réception du produit.</p>
+                    </div>
+                </div>
+                <!-- FAQ Item 3 -->
+                <div class="faq-item fade-in-up">
+                    <button class="faq-question">
+                        <span>Les parfums sont-ils authentiques ?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Oui, absolument. Tous nos parfums sont garantis 100% authentiques. Nous importons directement nos flacons depuis des distributeurs et parfumeries de confiance pour vous garantir un sillage de qualité.</p>
+                    </div>
+                </div>
+                <!-- FAQ Item 4 -->
+                <div class="faq-item fade-in-up">
+                    <button class="faq-question">
+                        <span>Que faire si le parfum ne me convient pas ?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Nous vous permettons d'inspecter l'emballage de votre parfum à la livraison. En cas de problème ou de défaut sur le flacon scellé, nous procédons à un échange ou à un remboursement immédiat via notre service client sur WhatsApp.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- FINAL CTA --- -->
+        <section class="final-cta">
+            <div class="fade-in-up">
+                <span class="section-label" style="color: var(--accent-gold);">Révélez votre présence</span>
+                <h2>Trouvez Votre Signature <span>Dès Aujourd'hui</span></h2>
+                <p>N'attendez plus pour porter l'essence qui vous correspond. Commandez en un clic et profitez d'une livraison rapide à domicile à Ouagadougou.</p>
+                <a href="https://wa.me/22657138126?text=Bonjour%20Aura%20Parfums%2C%20je%20souhaite%20commander%20un%20parfum." target="_blank" class="btn-luxury-solid">
+                    Commander maintenant sur WhatsApp
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- --- FOOTER --- -->
+    <footer id="contact">
+        <div class="footer-grid">
+            <!-- Footer brand info -->
+            <div class="footer-info">
+                <h3>AURA<span>.</span></h3>
+                <p>Votre adresse de confiance pour des parfums de marque originaux importés aux meilleurs prix à Ouagadougou. Affirmez votre sillage avec classe.</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer links -->
+            <div class="footer-links">
+                <h4>Navigation</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#accueil">Accueil</a></li>
+                    <li><a href="#comment-ca-marche">Signature</a></li>
+                    <li><a href="#collection">Collection</a></li>
+                    <li><a href="#temoignages">Avis</a></li>
+                </ul>
+            </div>
+
+            <!-- Footer contact info -->
+            <div class="footer-contact">
+                <h4>Contact & Infos</h4>
+                <div class="contact-item">
+                    <div class="contact-icon-box">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    </div>
+                    <div class="contact-text">
+                        <strong>Boutique & Retrait</strong>
+                        Ouagadougou (Burkina Faso)
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon-box">
+                        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </div>
+                    <div class="contact-text">
+                        <strong>WhatsApp / Téléphone</strong>
+                        +226 57 13 81 26 / +226 54 32 25 32
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon-box">
+                        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    </div>
+                    <div class="contact-text">
+                        <strong>E-mail</strong>
+                        contact@auraparfums.com
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Aura Parfums. Tous droits réservés.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Mentions Légales</a>
+                <a href="#">Politique de Confidentialité</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- --- JAVASCRIPT --- -->
+    <script src="script.js"></script>
+</body>
+</html>
