@@ -1774,6 +1774,48 @@ footer {
 
     .final-cta {
         padding: 64px var(--section-pad-x);
+        padding: 80px var(--section-pad-x);
+    }
+
+    .final-cta h2 {
+        font-size: 2rem;
+    }
+
+    .final-cta p {
+        font-size: 0.85rem;
+        margin-bottom: 32px;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE — SMALL MOBILE (≤480px)
+   ============================================================ */
+@media (max-width: 480px) {
+    :root {
+        --section-pad-x: 5%;
+        --section-pad-y: 60px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.1rem;
+    }
+
+    .hero-image-wrapper {
+        max-width: 250px;
+    }
+
+    .product-footer {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .price-val {
+        font-size: 1.3rem;
+    }
+
+    .btn-order-gold {
+        padding: 8px 16px;
+        font-size: 0.6rem;
     }
 }
 
