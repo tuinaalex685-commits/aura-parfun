@@ -630,6 +630,16 @@ header.scrolled {
 /* ============================================================
    HOW IT WORKS (3 Steps)
    ============================================================ */
+#comment-ca-marche {
+    background-color: var(--noir);
+    border-top: 1px solid rgba(184, 151, 106, 0.06);
+    border-bottom: 1px solid rgba(184, 151, 106, 0.06);
+}
+
+#comment-ca-marche h2 {
+    color: var(--text-light);
+}
+
 .how-it-works-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -637,13 +647,26 @@ header.scrolled {
 }
 
 .step-card {
-    background: var(--blanc);
+    background: var(--noir-card);
     padding: 56px 36px 48px;
-    border: var(--border-subtle);
+    border: var(--border-dark);
     border-radius: 6px;
     position: relative;
     transition: all var(--duration) var(--ease-luxury);
 }
+
+.step-card h3 {
+    color: var(--text-light);
+}
+
+.step-card p {
+    color: var(--text-light-soft);
+}
+
+.step-icon-wrapper {
+    background: var(--or-muted);
+}
+
 
 .step-card:hover {
     transform: translateY(-6px);
