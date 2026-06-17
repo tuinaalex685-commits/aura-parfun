@@ -698,13 +698,13 @@ header.scrolled .menu-btn span {
    HOW IT WORKS (3 Steps)
    ============================================================ */
 #comment-ca-marche {
-    background-color: var(--noir);
-    border-top: 1px solid rgba(184, 151, 106, 0.06);
-    border-bottom: 1px solid rgba(184, 151, 106, 0.06);
+    background-color: var(--creme);
+    border-top: var(--border-subtle);
+    border-bottom: var(--border-subtle);
 }
 
 #comment-ca-marche h2 {
-    color: var(--text-light);
+    color: var(--text-noir);
 }
 
 .how-it-works-grid {
@@ -714,24 +714,45 @@ header.scrolled .menu-btn span {
 }
 
 .step-card {
-    background: var(--noir-card);
+    background: var(--blanc);
     padding: 56px 36px 48px;
-    border: var(--border-dark);
+    border: var(--border-subtle);
     border-radius: 6px;
     position: relative;
     transition: all var(--duration) var(--ease-luxury);
 }
 
 .step-card h3 {
-    color: var(--text-light);
+    color: var(--text-noir);
 }
 
 .step-card p {
-    color: var(--text-light-soft);
+    color: var(--text-muted);
 }
 
 .step-icon-wrapper {
-    background: var(--or-muted);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--noir);
+    color: var(--or);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 32px;
+    transition: all var(--duration) var(--ease-luxury);
+}
+
+/* Custom coloring for step icons to match user request */
+.how-it-works-grid .step-card:nth-child(1) .step-icon-wrapper,
+.how-it-works-grid .step-card:nth-child(3) .step-icon-wrapper {
+    background: var(--noir);
+    color: var(--or);
+}
+
+.how-it-works-grid .step-card:nth-child(2) .step-icon-wrapper {
+    background: var(--or);
+    color: var(--blanc);
 }
 
 
