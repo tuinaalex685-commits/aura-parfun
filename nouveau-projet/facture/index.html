@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="fr" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chadra Facture — Facturation & Gestion Clients Simplifiée</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            950: '#030712',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <!-- Supabase JS CDN (client-side connection integration) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-[#f8fafc] dark:bg-gray-950 text-gray-800 dark:text-gray-200 transition-colors duration-300 min-h-screen flex flex-col">
+
+    <!-- Theme toggler float -->
+    <button onclick="document.documentElement.classList.toggle('dark')" class="fixed bottom-6 right-6 z-50 p-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl rounded-full text-gray-700 dark:text-gray-300 hover:scale-110 active:scale-95 transition-all no-print">
+        <svg class="w-6 h-6 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9h-1m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707m2.828 9.9a5 5 0 117.072 0l-7.072 7.072z"></path></svg>
+        <svg class="w-6 h-6 hidden dark:block text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+    </button>
+
+    <!-- AUTHENTICATION LAYOUT -->
+    <div id="auth-layout" class="flex-grow flex items-center justify-center p-6 bg-gradient-to-tr from-primary-50 via-white to-sky-50 dark:from-gray-950 dark:via-gray-900 dark:to-primary-950/20">
+        <div class="glass-panel w-full max-w-md p-8 rounded-3xl shadow-2xl hover-card border border-white/40 dark:border-gray-800/80">
+            <div class="text-center mb-8">
+                <span class="inline-flex items-center justify-center p-3.5 bg-primary-600 rounded-2xl shadow-xl shadow-primary-500/20 mb-3">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                </span>
+                <h1 id="auth-title" class="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">Se connecter à Chadra Facture</h1>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Gérez vos factures et clients en toute simplicité.</p>
+            </div>
+
+            <form id="auth-form" class="space-y-5">
+                <input type="hidden" id="auth-mode" value="login">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">Adresse Email</label>
+                    <input type="email" id="auth-email" value="demo@chadra.com" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">Mot de passe</label>
+                    <input type="password" id="auth-password" value="demo123" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all" required>
+                </div>
+
+                <button type="submit" id="auth-submit-btn" class="w-full py-3.5 px-4 bg-primary-600 hover:bg-primary-750 text-white font-bold rounded-xl shadow-lg shadow-primary-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0">
+                    Se connecter
+                </button>
+            </form>
+
+            <div class="mt-6 text-center text-sm">
+                <a href="#" id="toggle-auth-mode" class="text-primary-600 dark:text-primary-400 font-semibold hover:underline">Créer un compte</a>
+            </div>
+            
+            <div class="mt-8 p-4 bg-gray-50 dark:bg-gray-900/60 rounded-2xl border border-gray-100 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400 space-y-1">
+                <p class="font-semibold text-gray-700 dark:text-gray-300">Mode Démo Direct :</p>
+                <p>Email: <span class="font-mono">demo@chadra.com</span></p>
+                <p>MDP: <span class="font-mono">demo123</span></p>
+            </div>
+        </div>
+        <!-- MAIN APP LAYOUT -->
+    <div id="app-layout" class="hidden flex-grow flex flex-col md:flex-row min-h-screen">
+        
+        <!-- Mobile Header (Visible only on mobile) -->
+        <header class="md:hidden bg-white dark:bg-gray-900 border-b border-gray-200/60 dark:border-gray-800/80 px-5 py-4 flex items-center justify-between no-print sticky top-0 z-20">
+            <div class="flex items-center gap-2.5">
+                <span class="p-1.5 bg-primary-600 rounded-lg text-white shadow-md">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                </span>
+                <div>
+                    <h2 class="text-sm font-black text-gray-900 dark:text-white leading-none">Chadra Facture</h2>
+                </div>
+            </div>
+            <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-950 flex items-center justify-center text-primary-600 dark:text-primary-400 font-extrabold text-xs uppercase">
+                CF
+            </div>
+        </header>
+
+        <!-- Desktop Sidebar Navigation (Hidden on mobile) -->
+        <aside class="hidden md:flex w-64 bg-white dark:bg-gray-900 border-r border-gray-200/60 dark:border-gray-800/80 flex-col justify-between no-print z-10 sticky top-0 h-screen">
+            <div>
+                <!-- Brand logo Header -->
+                <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center gap-3">
+                    <span class="p-2 bg-primary-600 rounded-xl text-white shadow-md">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </span>
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-900 dark:text-white leading-none">Chadra</h2>
+                        <span class="text-[10px] text-primary-600 dark:text-primary-400 font-extrabold uppercase tracking-widest">Facture</span>
+                    </div>
+                </div>
+
+                <!-- Navigation menu -->
+                <nav class="p-4 space-y-1.5">
+                    <a href="#" data-tab-target="dashboard" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-xl text-primary-600 bg-primary-50 dark:bg-primary-900/20 dark:text-primary-400 transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                        Dashboard
+                    </a>
+                    <a href="#" data-tab-target="clients" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-xl text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800 transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        Clients
+                    </a>
+                    <a href="#" data-tab-target="invoices" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-xl text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800 transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Factures
+                    </a>
+                    <a href="#" data-tab-target="payments" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-xl text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800 transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Paiements
+                    </a>
+                    <a href="#" data-tab-target="settings" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-xl text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800 transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        Paramètres
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Profile and Logout area -->
+            <div class="p-4 border-t border-gray-100 dark:border-gray-800 space-y-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-primary-100 dark:bg-primary-950 flex items-center justify-center text-primary-600 dark:text-primary-400 font-extrabold text-sm uppercase">
+                        CF
+                    </div>
+                    <div class="truncate">
+                        <p id="user-profile-email" class="text-xs font-bold text-gray-900 dark:text-white truncate">email@domain.com</p>
+                        <span class="text-[10px] text-gray-400 dark:text-gray-500 font-medium">Entrepreneur</span>
+                    </div>
+                </div>
+                <button id="logout-btn" class="w-full flex items-center justify-center gap-2 py-2 px-3 bg-gray-50 dark:bg-gray-800 hover:bg-red-50 dark:hover:bg-red-950/20 hover:text-red-600 text-gray-500 dark:text-gray-400 text-xs font-bold rounded-lg transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    Déconnexion
+                </button>
+            </div>
+        </aside>
+
+        <!-- Bottom Navigation Bar (Visible only on mobile devices) -->
+        <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200/60 dark:border-gray-800/80 flex justify-around py-2 z-20 no-print">
+            <a href="#" data-tab-target="dashboard" class="flex flex-col items-center gap-1 text-primary-600 dark:text-primary-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                <span class="text-[9px] font-bold">Dashboard</span>
+            </a>
+            <a href="#" data-tab-target="clients" class="flex flex-col items-center gap-1 text-gray-500 dark:text-gray-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                <span class="text-[9px] font-semibold">Clients</span>
+            </a>
+            <a href="#" data-tab-target="invoices" class="flex flex-col items-center gap-1 text-gray-500 dark:text-gray-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <span class="text-[9px] font-semibold">Factures</span>
+            </a>
+            <a href="#" data-tab-target="payments" class="flex flex-col items-center gap-1 text-gray-500 dark:text-gray-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="text-[9px] font-semibold">Paiements</span>
+            </a>
+            <a href="#" data-tab-target="settings" class="flex flex-col items-center gap-1 text-gray-500 dark:text-gray-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
+                <span class="text-[9px] font-semibold">Paramètres</span>
+            </a>
+        </nav>
+  </aside>
+
+        <!-- Dynamic Content Panel -->
+        <main class="flex-grow p-6 md:p-10 overflow-y-auto max-h-screen">
+
+            <!-- 1. DASHBOARD VIEW -->
+            <section id="dashboard-view" class="app-view space-y-8">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Bonjour !</h1>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Voici le point de votre activité financière.</p>
+                    </div>
+                </div>
+
+                <!-- Stats Cards Group -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+                    <div class="glass-panel p-5 rounded-2xl shadow-sm hover-card">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Clients</span>
+                        <h3 id="stat-clients" class="text-2xl font-extrabold text-gray-900 dark:text-white mt-1">0</h3>
+                    </div>
+                    <div class="glass-panel p-5 rounded-2xl shadow-sm hover-card">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Factures</span>
+                        <h3 id="stat-factures" class="text-2xl font-extrabold text-gray-900 dark:text-white mt-1">0</h3>
+                    </div>
+                    <div class="glass-panel p-5 rounded-2xl shadow-sm hover-card">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Facturé</span>
+                        <h3 id="stat-total-facture" class="text-2xl font-extrabold text-gray-900 dark:text-white mt-1">0 FCFA</h3>
+                    </div>
+                    <div class="glass-panel p-5 rounded-2xl shadow-sm border-emerald-500/10 hover-card">
+                        <span class="text-xs font-bold text-emerald-500 uppercase tracking-wider">Total Encaissé</span>
+                        <h3 id="stat-total-encaisse" class="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">0 FCFA</h3>
+                    </div>
+                    <div class="glass-panel p-5 rounded-2xl shadow-sm border-red-500/10 hover-card">
+                        <span class="text-xs font-bold text-red-500 uppercase tracking-wider">Total Impayé</span>
+                        <h3 id="stat-total-impaye" class="text-2xl font-extrabold text-red-600 dark:text-red-400 mt-1">0 FCFA</h3>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Recent Invoices -->
+                    <div class="lg:col-span-2 glass-panel rounded-2xl shadow-sm border border-gray-200/50 dark:border-gray-800/80 overflow-hidden">
+                        <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Dernières Factures</h3>
+                            <button onclick="App.switchTab('invoices')" class="text-sm font-semibold text-primary-600 dark:text-primary-400 hover:underline">Voir tout</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-gray-50/50 dark:bg-gray-900/50 text-xs font-bold text-gray-400 uppercase border-b border-gray-100 dark:border-gray-800">
+                                    <tr>
+                                        <th class="px-6 py-4">ID</th>
+                                        <th class="px-6 py-4">Client</th>
+                                        <th class="px-6 py-4">Montant</th>
+                                        <th class="px-6 py-4">Date</th>
+                                        <th class="px-6 py-4">Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-invoices-list" class="divide-y divide-gray-100 dark:divide-gray-800/60">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Alerts & Debts updates -->
+                    <div class="glass-panel p-6 rounded-2xl shadow-sm border border-gray-200/50 dark:border-gray-800/80 space-y-5">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Alertes de retards</h3>
+                        <div id="dashboard-alerts-list" class="space-y-4">
+                            <!-- Dynamic alert cards -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. CLIENTS VIEW -->
+            <section id="clients-view" class="app-view hidden space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Clients</h1>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Gérez la base de données de vos clients.</p>
+                    </div>
+                    <button onclick="App.openAddClientModal()" class="w-full sm:w-auto px-5 py-3 bg-primary-600 hover:bg-primary-750 text-white font-bold rounded-xl shadow-lg shadow-primary-500/20 transition-all flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2".5 d="M12 4v16m8-8H4"></path></svg>
+                        Ajouter un client
+                    </button>
+                </div>
+
+                <!-- Client Search Bar -->
+                <div class="relative w-full">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </span>
+                    <input type="text" id="client-search" placeholder="Rechercher par nom ou téléphone..." class="w-full pl-11 pr-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all">
+                </div>
+
+                <!-- Clients Data Table -->
+                <div class="glass-panel rounded-2xl shadow-sm border border-gray-200/50 dark:border-gray-800/80 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-50/50 dark:bg-gray-900/50 text-xs font-bold text-gray-400 uppercase border-b border-gray-100 dark:border-gray-800">
+                                <tr>
+                                    <th class="px-6 py-4">Nom</th>
+                                    <th class="px-6 py-4">Numéro de téléphone</th>
+                                    <th class="px-6 py-4">Date de création</th>
+                                    <th class="px-6 py-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clients-table-body" class="divide-y divide-gray-100 dark:divide-gray-800/60">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Client Pagination Controls -->
+                    <div class="px-6 py-4 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center">
+                        <p id="pagination-info" class="text-sm text-gray-500 dark:text-gray-400">
+                            Page <span class="font-bold">1</span> sur <span class="font-bold">1</span>
+                        </p>
+                        <div class="flex gap-2">
+                            <button id="pagination-prev" class="px-3 py-1.5 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Précédent</button>
+                            <button id="pagination-next" class="px-3 py-1.5 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Suivant</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. INVOICES VIEW -->
+            <section id="invoices-view" class="app-view hidden space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Factures</h1>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Gérez et suivez vos factures clients.</p>
+                    </div>
+                    <button onclick="App.openAddInvoiceModal()" class="w-full sm:w-auto px-5 py-3 bg-primary-600 hover:bg-primary-750 text-white font-bold rounded-xl shadow-lg shadow-primary-500/20 transition-all flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Créer une facture
+                    </button>
+                </div>
+
+                <!-- Invoice Search & Filters -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="relative md:col-span-2">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </span>
+                        <input type="text" id="invoice-search" placeholder="Rechercher par client ou ID..." class="w-full pl-11 pr-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all">
+                    </div>
+                    <div>
+                        <select id="invoice-status-filter" class="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all">
+                            <option value="all">Tous les statuts</option>
+                            <option value="paid">Payé</option>
+                            <option value="unpaid">Impayé</option>
+                            <option value="partially_paid">Partiellement payé</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Invoices List Table -->
+                <div class="glass-panel rounded-2xl shadow-sm border border-gray-200/50 dark:border-gray-800/80 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-50/50 dark:bg-gray-900/50 text-xs font-bold text-gray-400 uppercase border-b border-gray-100 dark:border-gray-800">
+                                <tr>
+                                    <th class="px-6 py-4">N° Facture</th>
+                                    <th class="px-6 py-4">Client</th>
+                                    <th class="px-6 py-4">Montant Total</th>
+                                    <th class="px-6 py-4">Date d'émission</th>
+                                    <th class="px-6 py-4">Statut</th>
+                                    <th class="px-6 py-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="invoices-table-body" class="divide-y divide-gray-100 dark:divide-gray-800/60">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. PAYMENTS VIEW -->
+            <section id="payments-view" class="app-view hidden space-y-8">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Paiements & Encaisses</h1>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Consultez l'historique des paiements et le suivi des dettes clients.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Debt Tracking (Unpaid balances) -->
+                    <div class="lg:col-span-1 glass-panel p-6 rounded-2xl shadow-sm border border-gray-200/50 dark:border-gray-800/80">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Dettes par Client</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="text-xs font-bold text-gray-400 uppercase border-b border-gray-100 dark:border-gray-800">
+                                    <tr>
+                                        <th class="pb-3">Client</th>
+                                        <th class="pb-3">Total Facturé</th>
+                                        <th class="pb-3">Solde Dû</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="debts-table-body" class="divide-y divide-gray-100 dark:divide-gray-800/60">
+                                    <!-- Dynamic Debt Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Payment Logs (Successes) -->
+                    <div class="lg:col-span-2 glass-panel rounded-2xl shadow-sm border border-gray-200/50 dark:border-gray-800/80 overflow-hidden">
+                        <div class="p-6 border-b border-gray-100 dark:border-gray-800">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Historique Récent des Encaisses</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-gray-50/50 dark:bg-gray-900/50 text-xs font-bold text-gray-400 uppercase border-b border-gray-100 dark:border-gray-800">
+                                    <tr>
+                                        <th class="px-6 py-4">Réf encaissement</th>
+                                        <th class="px-6 py-4">Client</th>
+                                        <th class="px-6 py-4">Réf Facture</th>
+                                        <th class="px-6 py-4">Montant Reçu</th>
+                                        <th class="px-6 py-4">Date de réception</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="payments-table-body" class="divide-y divide-gray-100 dark:divide-gray-800/60">
+                                    <!-- Dynamic Payment Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. SETTINGS VIEW -->
+            <section id="settings-view" class="app-view hidden space-y-6">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Paramètres</h1>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Configurez votre profil et connectez votre base de données Supabase cloud.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- General Settings -->
+                    <div class="glass-panel p-6 rounded-2xl shadow-sm border border-gray-200/50 dark:border-gray-800/80 space-y-5">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Configuration Générale</h3>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Taux TVA par défaut</label>
+                            <input type="text" value="18%" disabled class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-850 bg-gray-50 dark:bg-gray-900 text-gray-500 cursor-not-allowed outline-none">
+                            <span class="text-[10px] text-gray-400 mt-1 block">Le taux de TVA de l'UEMOA (18%) est géré par défaut à la création de chaque facture.</span>
+                        </div>
+                    </div>
+
+                    <!-- Supabase Connection Config -->
+                    <div class="glass-panel p-6 rounded-2xl shadow-sm border border-gray-200/50 dark:border-gray-800/80 space-y-5">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Connexion Supabase (Optionnel)</h3>
+                            <span class="px-2.5 py-1 text-[10px] uppercase font-bold tracking-wider rounded-lg bg-primary-100 dark:bg-primary-950 text-primary-600 dark:text-primary-400">Production</span>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Insérez les clés de votre base Supabase gratuite pour sauvegarder vos données dans le Cloud au lieu de votre navigateur.</p>
+                        
+                        <form id="supabase-config-form" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">URL Supabase</label>
+                                <input type="url" id="supabase-url" placeholder="https://xxxxxx.supabase.co" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Clé publique (Anon Key)</label>
+                                <input type="password" id="supabase-key" placeholder="eyJhbGciOi..." class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all">
+                            </div>
+                            <div class="flex gap-3 pt-2">
+                                <button type="submit" class="px-5 py-3 bg-primary-600 hover:bg-primary-750 text-white font-bold rounded-xl text-sm transition-colors">Enregistrer & Se Connecter</button>
+                                <button type="button" onclick="document.getElementById('supabase-url').value=''; document.getElementById('supabase-key').value=''; document.getElementById('supabase-config-form').dispatchEvent(new Event('submit'))" class="px-5 py-3 border border-red-200 text-red-600 hover:bg-red-50 dark:border-red-900/40 dark:text-red-400 dark:hover:bg-red-950/20 font-bold rounded-xl text-sm transition-colors">Réinitialiser (Local DB)</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- MODAL: ADD/EDIT CLIENT -->
+    <div id="client-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md p-6 rounded-3xl shadow-2xl relative border border-white/20 dark:border-gray-800">
+            <button onclick="App.closeModal('client-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 id="client-modal-title" class="text-xl font-extrabold text-gray-900 dark:text-white mb-6">Ajouter un client</h3>
+            
+            <form id="client-form" class="space-y-4">
+                <input type="hidden" id="client-edit-id" value="">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nom Complet</label>
+                    <input type="text" id="client-name" placeholder="Ex: Alex Tuina" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Numéro de Téléphone</label>
+                    <input type="tel" id="client-phone" placeholder="Ex: +226 70 00 00 00" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all">
+                </div>
+                <button type="submit" class="w-full py-3.5 px-4 bg-primary-600 hover:bg-primary-750 text-white font-bold rounded-xl shadow-lg shadow-primary-500/20 transition-all mt-4">
+                    Enregistrer
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: CREATE INVOICE -->
+    <div id="invoice-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-2xl p-6 rounded-3xl shadow-2xl relative border border-white/20 dark:border-gray-800 max-h-[90vh] overflow-y-auto">
+            <button onclick="App.closeModal('invoice-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-xl font-extrabold text-gray-900 dark:text-white mb-6">Créer une facture</h3>
+
+            <form id="invoice-form" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Sélectionner un Client</label>
+                        <select id="invoice-client-select" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all" required>
+                            <!-- Dynamic clients list -->
+                        </select>
+                    </div>
+                    <div class="flex items-center pt-6">
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="invoice-tax-toggle" class="sr-only peer" checked>
+                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
+                            <span class="ms-3 text-sm font-semibold text-gray-700 dark:text-gray-300">Activer la TVA (18%)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Invoice Items Section -->
+                <div>
+                    <div class="flex justify-between items-center mb-3">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Lignes de Facture</label>
+                        <button type="button" id="add-invoice-item-btn" class="text-xs font-bold text-primary-600 hover:text-primary-750 dark:text-primary-400 dark:hover:text-primary-300 flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            Ajouter une ligne
+                        </button>
+                    </div>
+                    <div id="invoice-items-container">
+                        <!-- Dynamic item rows -->
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 px-4 bg-primary-600 hover:bg-primary-750 text-white font-bold rounded-xl shadow-lg shadow-primary-500/20 transition-all mt-4">
+                    Générer la Facture
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD PAYMENT / ENCAISSEMENT -->
+    <div id="payment-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md p-6 rounded-3xl shadow-2xl relative border border-white/20 dark:border-gray-800">
+            <button onclick="App.closeModal('payment-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-xl font-extrabold text-gray-900 dark:text-white mb-2">Enregistrer un paiement</h3>
+            <p id="payment-debt-info" class="text-xs text-red-500 font-bold mb-6">Reste à payer : 0 FCFA</p>
+            
+            <form id="payment-form" class="space-y-4">
+                <input type="hidden" id="payment-invoice-id" value="">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Montant du Paiement (FCFA)</label>
+                    <input type="number" id="payment-amount" min="1" step="any" placeholder="Ex: 50000" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all" required>
+                </div>
+                <button type="submit" class="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-750 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition-all mt-4">
+                    Enregistrer l'encaissement
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: INVOICE DETAILS & EXPORT -->
+    <div id="invoice-detail-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-3xl rounded-3xl shadow-2xl relative border border-white/20 dark:border-gray-850 max-h-[90vh] overflow-y-auto">
+            <button onclick="App.closeModal('invoice-detail-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-white no-print">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div id="invoice-detail-content">
+                <!-- Dynamic loaded details -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
